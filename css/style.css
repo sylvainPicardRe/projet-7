@@ -67,3 +67,51 @@ h1 {
   color: #fff;
   font-size: 2rem;
 }
+
+/* Cards */
+.recipes-wrapper {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 1.5rem;
+}
+
+.card {
+  width: 25rem;
+  margin: auto;
+  min-height: 750px;
+}
+
+.card img {
+  object-fit: cover;
+  height: 250px;
+}
+
+.card h5 {
+  color: black;
+}
+
+.card h6,
+.quantity {
+  color: var(--gray);
+}
+
+.card__time {
+  background-color: #ffd15b;
+  border-radius: 2rem;
+  position: absolute;
+  right: 0;
+  padding: 0.5rem 1rem;
+  margin: 1rem;
+}
+
+.card__ingredients-list {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+}
+
+.card__description {
+  display: -webkit-box;
+  -webkit-line-clamp: 4;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
