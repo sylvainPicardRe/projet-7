@@ -16,8 +16,14 @@ class App {
     this.FullRecipes = Recipes
   }
 
+  async renderRecipesCount() {
+    const Template = new RecipesCount(this.FullRecipes)
+    Template.render()
+  }
+
   async init() {
     await this.fetchRecipes()
+    await this.renderRecipesCount()
 
     this.FullRecipes.forEach((recipe) => {
       const Template = new RecipeCard(recipe)

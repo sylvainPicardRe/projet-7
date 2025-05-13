@@ -13,7 +13,9 @@
   box-sizing: border-box;
 }
 
-h1 {
+h1,
+h5,
+.recipes-count {
   font-family: 'Anton', 'Open Sans', sans-serif !important;
 }
 
