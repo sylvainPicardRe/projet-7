@@ -140,6 +140,10 @@ body {
 }
 
 .dropdown-button {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+
   border-radius: 1rem;
   padding: 1rem;
   width: 200px;
@@ -156,4 +160,32 @@ body {
 /* recipes-count */
 .recipes-count {
   margin: auto;
+}
+
+/* tag */
+.tags-wrapper {
+  display: flex;
+  gap: 1rem;
+  margin-bottom: 2rem;
+}
+
+.tag {
+  background-color: var(--yellow);
+  border-radius: 1rem;
+  display: flex;
+  justify-content: space-between;
+  justify-items: center;
+  height: 50px;
+  width: 150px;
+  padding: 0 1rem;
+}
+
+.tag > p {
+  margin: auto 0;
+  text-align: center;
+}
+
+.tag-btn {
+  background: none;
+  border: none;
 }

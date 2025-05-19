@@ -1,7 +1,6 @@
 class App {
   constructor() {
     this.$recipesWrapper = document.querySelector('.recipes-wrapper')
-    console.log('toto')
 
     this.recipesApi = new RecipeApi('./data/recipes.json')
 

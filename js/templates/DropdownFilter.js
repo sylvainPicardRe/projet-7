@@ -9,6 +9,9 @@ class DropdownFilter {
     const dropdownDiv = document.createElement('div')
     dropdownDiv.className = 'dropdown'
 
+    const arrowIcon = document.createElement('i')
+    arrowIcon.setAttribute('class', 'fa fa-chevron-down')
+
     // Créer le bouton de déclenchement du dropdown
     const button = document.createElement('button')
     button.className = 'dropdown-button'
@@ -27,7 +30,20 @@ class DropdownFilter {
       a.textContent = item
       a.addEventListener('click', (e) => {
         e.preventDefault()
-        // menu.classList.remove('show') // Fermer le menu après sélection
+        const tagsWrapper = document.querySelector('.tags-wrapper')
+        const selectedText = e.target.textContent
+
+        // Vérifier si le tag existe déjà
+        const existingTags = tagsWrapper.querySelectorAll('.tag')
+        const isDuplicate = Array.from(existingTags).some(
+          (tag) => tag.textContent.trim() === selectedText,
+        )
+
+        if (!isDuplicate) {
+          const tag = new Tag(selectedText).render()
+          tagsWrapper.appendChild(tag)
+          menu.classList.remove('show')
+        }
       })
       menu.appendChild(a)
     })
@@ -45,6 +61,7 @@ class DropdownFilter {
 
     // Assembler les éléments
     dropdownDiv.appendChild(button)
+    button.appendChild(arrowIcon)
     dropdownDiv.appendChild(menu)
     this.container.appendChild(dropdownDiv)
   }
