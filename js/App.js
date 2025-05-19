@@ -21,9 +21,34 @@ class App {
     Template.render()
   }
 
+  async renderDropdownFilter() {
+    const uniqueIngredients = getUniqueValues(this.FullRecipes, (recipe) =>
+      recipe.ingredients.map((ing) => ing.ingredient),
+    )
+    const uniqueAppliances = getUniqueValues(this.FullRecipes, (recipe) => [
+      recipe.appliance,
+    ])
+    const uniqueUstensils = getUniqueValues(
+      this.FullRecipes,
+      (recipe) => recipe.ustensils,
+    )
+
+    const ingredientsDropdown = new DropdownFilter(
+      'Ingrédients',
+      uniqueIngredients,
+    )
+    const appliancesDropdown = new DropdownFilter('Appareils', uniqueAppliances)
+    const ustensilsDropdown = new DropdownFilter('Ustensiles', uniqueUstensils)
+
+    ingredientsDropdown.render()
+    appliancesDropdown.render()
+    ustensilsDropdown.render()
+  }
+
   async init() {
     await this.fetchRecipes()
     await this.renderRecipesCount()
+    await this.renderDropdownFilter()
 
     this.FullRecipes.forEach((recipe) => {
       const Template = new RecipeCard(recipe)
