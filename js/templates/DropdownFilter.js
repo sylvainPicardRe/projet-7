@@ -22,7 +22,10 @@ class DropdownFilter {
     const menu = document.createElement('div')
     menu.className = 'dropdown-menu'
 
+    const search = new SearchForm()
+
     // Ajouter les éléments au dropdown
+    menu.appendChild(search.createSearchForm('', 'dropdown'))
     this.items.forEach((item) => {
       const a = document.createElement('a')
       a.className = 'dropdown-item'

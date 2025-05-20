@@ -1,6 +1,7 @@
 class App {
   constructor() {
     this.$recipesWrapper = document.querySelector('.recipes-wrapper')
+    this.$searchFormWrapper = document.querySelector('.search-form-wrapper')
 
     this.recipesApi = new RecipeApi('./data/recipes.json')
 
@@ -13,6 +14,14 @@ class App {
     const Recipes = recipesData.map((recipe) => new Recipe(recipe))
 
     this.FullRecipes = Recipes
+  }
+
+  async renderSearchForm() {
+    const Template = new SearchForm(
+      'Rechercher une recette, un ingrédient, ...',
+      'hero',
+    )
+    this.$searchFormWrapper.appendChild(Template.createSearchForm())
   }
 
   async renderRecipesCount() {
@@ -48,6 +57,7 @@ class App {
     await this.fetchRecipes()
     await this.renderRecipesCount()
     await this.renderDropdownFilter()
+    await this.renderSearchForm()
 
     this.FullRecipes.forEach((recipe) => {
       const Template = new RecipeCard(recipe)

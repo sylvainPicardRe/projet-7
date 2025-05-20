@@ -31,6 +31,12 @@ body {
   margin-top: 1rem;
 }
 
+.reset-btn {
+  background-color: transparent !important;
+  color: black !important;
+  display: none;
+}
+
 /* header */
 .hero {
   background-image: url('../assets/background-header.jpg');
@@ -139,6 +145,11 @@ body {
   margin-top: 1rem;
 }
 
+.dropdown {
+  position: relative;
+  z-index: 1;
+}
+
 .dropdown-button {
   display: flex;
   justify-content: space-between;
@@ -155,6 +166,33 @@ body {
 
 .dropdown-menu {
   width: 200px;
+  position: absolute;
+  top: 1rem !important;
+  z-index: -1 !important;
+  padding-top: 4rem !important;
+}
+
+.dropdown-search {
+  display: flex;
+  width: auto !important;
+  margin: 0 1rem;
+  border: 1px solid black;
+}
+
+.dropdown-search > input {
+  width: 100%;
+  border: none;
+  padding-left: 1rem;
+  border-radius: 1rem;
+}
+
+.dropdown-search > input:focus {
+  outline: none;
+}
+
+.dropdown-search > button {
+  border: none;
+  background: none;
 }
 
 /* recipes-count */
