@@ -2,6 +2,11 @@ class SearchForm {
   constructor(placeholder, parent) {
     this.placeholder = placeholder
     this.parent = parent
+    this.resetBtn = null
+  }
+
+  search() {
+    this.resetBtn.style.display = 'block'
   }
 
   createSearchForm() {
@@ -28,6 +33,8 @@ class SearchForm {
     resetBtn.textContent = 'x'
     resetBtn.className = 'reset-btn'
 
+    this.resetBtn = resetBtn
+
     const searchIcon = document.createElement('i')
     searchIcon.className = 'fas fa-search'
 
@@ -37,9 +44,11 @@ class SearchForm {
     searchForm.appendChild(resetBtn)
     searchForm.appendChild(searchBtn)
 
-    // Attacher l'événement
-    // button.addEventListener('click', () => this.handleClose())
-    // this.element = searchForm
+    input.addEventListener('input', () => this.search())
+    resetBtn.addEventListener(
+      'click',
+      () => (this.resetBtn.style.display = 'none'),
+    )
 
     return searchForm
   }
