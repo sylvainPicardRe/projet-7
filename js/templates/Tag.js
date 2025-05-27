@@ -5,6 +5,7 @@ class Tag {
   }
   handleClose() {
     this.element.remove()
+    tagManager.removeTag(this.name)
   }
   render() {
     // Créer les éléments DOM

@@ -1,13 +1,83 @@
 class DropdownFilter {
-  constructor(type, items, containerSelector, onSelectCallback) {
+  constructor(type, items, Recipes) {
     this.type = type // 'Ingrédients', 'Appareils' ou 'Ustensiles'
     this.items = items // Tableau d'éléments uniques
+    this.itemsListDiv = null
+    this.Recipes = Recipes
     this.container = document.querySelector('.dropdown-filter-wrapper')
   }
+
+  updateDropdown(Recipes) {
+    this.container.innerHTML = ''
+    const uniqueIngredients = getUniqueValues(Recipes, (recipe) =>
+      recipe.ingredients.map((ing) => ing.ingredient),
+    )
+
+    const uniqueAppliances = getUniqueValues(Recipes, (recipe) => [
+      recipe.appliance,
+    ])
+    const uniqueUstensils = getUniqueValues(
+      Recipes,
+      (recipe) => recipe.ustensils,
+    )
+
+    const DropdownIngredients = new DropdownFilter(
+      'Ingrédients',
+      uniqueIngredients,
+      Recipes,
+    )
+    const DropdownAppliances = new DropdownFilter(
+      'Appareils',
+      uniqueAppliances,
+      Recipes,
+    )
+    const DropdownUstensils = new DropdownFilter(
+      'Ustensiles',
+      uniqueUstensils,
+      Recipes,
+    )
+
+    DropdownIngredients.render()
+    DropdownAppliances.render()
+    DropdownUstensils.render()
+  }
+
+  searchTag() {
+    const recipesWrapper = document.querySelector('.recipes-wrapper')
+    this.itemsListDiv.querySelectorAll('a').forEach((a) => {
+      a.addEventListener('click', async (e) => {
+        recipesWrapper.innerHTML = ''
+
+        const selectedText = e.target.textContent
+        tagManager.addTag(selectedText)
+
+        const AdapterSearchLib = new SearchRecipesAdapter(
+          this.Recipes,
+          tagManager.getTags(),
+        )
+        const FilteredRecipes = await AdapterSearchLib.searchByTag()
+
+        FilteredRecipes.forEach((recipe) => {
+          const Template = new RecipeCard(recipe)
+
+          recipesWrapper.appendChild(Template.createRecipeCard())
+        })
+
+        const Template = new RecipesCount(FilteredRecipes)
+        Template.render()
+
+        //Mise a jour des dropdown
+        this.updateDropdown(FilteredRecipes)
+      })
+    })
+  }
+
   render() {
     // Créer le conteneur du dropdown
     const dropdownDiv = document.createElement('div')
-    dropdownDiv.className = 'dropdown'
+    dropdownDiv.setAttribute('class', `dropdown dropdown-${this.type}`)
+
+    this.dropdown = dropdownDiv
 
     const arrowIcon = document.createElement('i')
     arrowIcon.setAttribute('class', 'fa fa-chevron-down')
@@ -22,10 +92,10 @@ class DropdownFilter {
     const menu = document.createElement('div')
     menu.className = 'dropdown-menu'
 
-    const search = new SearchForm()
+    const listDiv = document.createElement('div')
+    listDiv.className = 'dropdown-list'
+    this.listDiv = listDiv
 
-    // Ajouter les éléments au dropdown
-    menu.appendChild(search.createSearchForm('', 'dropdown'))
     this.items.forEach((item) => {
       const a = document.createElement('a')
       a.className = 'dropdown-item'
@@ -33,23 +103,20 @@ class DropdownFilter {
       a.textContent = item
       a.addEventListener('click', (e) => {
         e.preventDefault()
-        const tagsWrapper = document.querySelector('.tags-wrapper')
-        const selectedText = e.target.textContent
-
-        // Vérifier si le tag existe déjà
-        const existingTags = tagsWrapper.querySelectorAll('.tag')
-        const isDuplicate = Array.from(existingTags).some(
-          (tag) => tag.textContent.trim() === selectedText,
-        )
-
-        if (!isDuplicate) {
-          const tag = new Tag(selectedText).render()
-          tagsWrapper.appendChild(tag)
-          menu.classList.remove('show')
-        }
+        this.searchTag()
       })
-      menu.appendChild(a)
+      listDiv.appendChild(a)
+      this.itemsListDiv = listDiv
     })
+
+    const search = new SearchItemForm(
+      this.type,
+      this.items,
+      this.itemsListDiv,
+      this.Recipes,
+    )
+
+    menu.appendChild(search.createSearchItemsForm())
 
     // Gérer l'ouverture/fermeture du menu
     button.addEventListener('click', (e) => {
@@ -57,15 +124,15 @@ class DropdownFilter {
       menu.classList.toggle('show')
     })
 
-    // Fermer le menu si on clique en dehors
-    document.addEventListener('click', () => {
-      // menu.classList.remove('show')
-    })
-
     // Assembler les éléments
     dropdownDiv.appendChild(button)
     button.appendChild(arrowIcon)
+    menu.appendChild(this.listDiv)
     dropdownDiv.appendChild(menu)
+
     this.container.appendChild(dropdownDiv)
+    this.dropdownDiv = dropdownDiv
+
+    this.searchTag()
   }
 }

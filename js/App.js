@@ -6,6 +6,14 @@ class App {
     this.recipesApi = new RecipeApi('./data/recipes.json')
 
     this.FullRecipes = []
+
+    this.uniqueIngredients = null
+    this.uniqueAppliances = null
+    this.uniqueUstensils = null
+
+    this.DropdownIngredients = null
+    this.DropdownAppliances = null
+    this.DropdownUstensils = null
   }
 
   async fetchRecipes() {
@@ -19,7 +27,7 @@ class App {
   async renderSearchForm() {
     const Template = new SearchForm(
       'Rechercher une recette, un ingrédient, ...',
-      'hero',
+      this.FullRecipes,
     )
     this.$searchFormWrapper.appendChild(Template.createSearchForm())
   }
@@ -30,27 +38,37 @@ class App {
   }
 
   async renderDropdownFilter() {
-    const uniqueIngredients = getUniqueValues(this.FullRecipes, (recipe) =>
+    this.uniqueIngredients = getUniqueValues(this.FullRecipes, (recipe) =>
       recipe.ingredients.map((ing) => ing.ingredient),
     )
-    const uniqueAppliances = getUniqueValues(this.FullRecipes, (recipe) => [
+
+    this.uniqueAppliances = getUniqueValues(this.FullRecipes, (recipe) => [
       recipe.appliance,
     ])
-    const uniqueUstensils = getUniqueValues(
+    this.uniqueUstensils = getUniqueValues(
       this.FullRecipes,
       (recipe) => recipe.ustensils,
     )
 
-    const ingredientsDropdown = new DropdownFilter(
+    this.DropdownIngredients = new DropdownFilter(
       'Ingrédients',
-      uniqueIngredients,
+      this.uniqueIngredients,
+      this.FullRecipes,
     )
-    const appliancesDropdown = new DropdownFilter('Appareils', uniqueAppliances)
-    const ustensilsDropdown = new DropdownFilter('Ustensiles', uniqueUstensils)
+    this.DropdownAppliances = new DropdownFilter(
+      'Appareils',
+      this.uniqueAppliances,
+      this.FullRecipes,
+    )
+    this.DropdownUstensils = new DropdownFilter(
+      'Ustensiles',
+      this.uniqueUstensils,
+      this.FullRecipes,
+    )
 
-    ingredientsDropdown.render()
-    appliancesDropdown.render()
-    ustensilsDropdown.render()
+    this.DropdownIngredients.render()
+    this.DropdownAppliances.render()
+    this.DropdownUstensils.render()
   }
 
   async init() {
@@ -73,3 +91,5 @@ class App {
 
 const app = new App()
 app.main()
+
+const tagManager = new TagManager(app)
