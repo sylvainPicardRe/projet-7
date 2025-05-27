@@ -44,32 +44,34 @@ class DropdownFilter {
 
   searchTag() {
     const recipesWrapper = document.querySelector('.recipes-wrapper')
-    this.itemsListDiv.querySelectorAll('a').forEach((a) => {
-      a.addEventListener('click', async (e) => {
-        recipesWrapper.innerHTML = ''
+    if (this.itemsListDiv != null) {
+      this.itemsListDiv.querySelectorAll('a').forEach((a) => {
+        a.addEventListener('click', async (e) => {
+          recipesWrapper.innerHTML = ''
 
-        const selectedText = e.target.textContent
-        tagManager.addTag(selectedText)
+          const selectedText = e.target.textContent
+          tagManager.addTag(selectedText)
 
-        const AdapterSearchLib = new SearchRecipesAdapter(
-          this.Recipes,
-          tagManager.getTags(),
-        )
-        const FilteredRecipes = await AdapterSearchLib.searchByTag()
+          const AdapterSearchLib = new SearchRecipesAdapter(
+            this.Recipes,
+            tagManager.getTags(),
+          )
+          const FilteredRecipes = await AdapterSearchLib.searchByTag()
 
-        FilteredRecipes.forEach((recipe) => {
-          const Template = new RecipeCard(recipe)
+          FilteredRecipes.forEach((recipe) => {
+            const Template = new RecipeCard(recipe)
 
-          recipesWrapper.appendChild(Template.createRecipeCard())
+            recipesWrapper.appendChild(Template.createRecipeCard())
+          })
+
+          const Template = new RecipesCount(FilteredRecipes)
+          Template.render()
+
+          //Mise a jour des dropdown
+          this.updateDropdown(FilteredRecipes)
         })
-
-        const Template = new RecipesCount(FilteredRecipes)
-        Template.render()
-
-        //Mise a jour des dropdown
-        this.updateDropdown(FilteredRecipes)
       })
-    })
+    }
   }
 
   render() {

@@ -11,32 +11,33 @@ class SearchForm {
   }
 
   async search(e) {
-    this.resetBtn.style.display = 'block'
+    if (e.target.value.length >= 3) {
+      this.resetBtn.style.display = 'block'
 
-    this.$recipesWrapper.innerHTML = ''
+      this.$recipesWrapper.innerHTML = ''
 
-    const AdapterSearchLib = new SearchRecipesAdapter(
-      this.Recipes,
-      e.target.value,
-    )
+      const AdapterSearchLib = new SearchRecipesAdapter(
+        this.Recipes,
+        e.target.value,
+      )
 
-    const FilteredRecipes = await AdapterSearchLib.searchByInput()
+      const FilteredRecipes = await AdapterSearchLib.searchByInput()
 
-    if (FilteredRecipes.length > 0) {
-      FilteredRecipes.forEach((recipe) => {
-        const reicpes = new Recipe(recipe)
-        const Template = new RecipeCard(reicpes)
-        this.$recipesWrapper.appendChild(Template.createRecipeCard())
-      })
-    } else {
-      this.$recipesWrapper.innerHTML = `<p class="empty-recipes">Aucune recettes ne corresponds à la recherche</p>`
+      if (FilteredRecipes.length > 0) {
+        FilteredRecipes.forEach((recipe) => {
+          const reicpes = new Recipe(recipe)
+          const Template = new RecipeCard(reicpes)
+          this.$recipesWrapper.appendChild(Template.createRecipeCard())
+        })
+      } else {
+        this.$recipesWrapper.innerHTML = `<p class="empty-recipes">Aucune recettes ne corresponds à la recherche</p>`
+      }
+      const Template = new RecipesCount(FilteredRecipes)
+      Template.render()
+
+      const dropdown = new DropdownFilter()
+      dropdown.updateDropdown(FilteredRecipes)
     }
-
-    const Template = new RecipesCount(FilteredRecipes)
-    Template.render()
-
-    const dropdown = new DropdownFilter()
-    dropdown.updateDropdown(FilteredRecipes)
   }
 
   reset() {
