@@ -27,6 +27,8 @@ class TagManager {
     )
     const FilteredRecipes = await AdapterSearchLib.searchByTag()
 
+    this.app.$recipesWrapper.innerHTML = ''
+
     FilteredRecipes.forEach((recipe) => {
       const Template = new RecipeCard(recipe)
 
