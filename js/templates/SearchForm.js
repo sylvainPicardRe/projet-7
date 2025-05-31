@@ -5,9 +5,8 @@ class SearchForm {
     this.Recipes = Recipes
 
     this.$recipesWrapper = document.querySelector('.recipes-wrapper')
+
     this.resetBtn = null
-    this.items = null
-    this.list = null
   }
 
   async search(e) {
