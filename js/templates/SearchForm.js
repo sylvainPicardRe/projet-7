@@ -5,11 +5,19 @@ class SearchForm {
     this.Recipes = Recipes
 
     this.$recipesWrapper = document.querySelector('.recipes-wrapper')
+    this.$errorMesage = document.querySelector('.error-message')
 
     this.resetBtn = null
   }
 
   async search(e) {
+    // gestion de l'affichage pour le message d'erreur pour le nombre de charactere saisi
+    if (e.target.value.length > 0 && e.target.value.length < 3) {
+      this.$errorMesage.style.display = 'block'
+    } else {
+      this.$errorMesage.style.display = 'none'
+    }
+
     if (e.target.value.length >= 3) {
       this.resetBtn.style.display = 'block'
 
@@ -44,8 +52,8 @@ class SearchForm {
 
     const FilteredRecipes = this.Recipes
     FilteredRecipes.forEach((recipe) => {
-      const reicpes = new Recipe(recipe)
-      const Template = new RecipeCard(reicpes)
+      const recipes = new Recipe(recipe)
+      const Template = new RecipeCard(recipes)
       this.$recipesWrapper.appendChild(Template.createRecipeCard())
     })
     const Template = new RecipesCount(FilteredRecipes)

@@ -57,7 +57,11 @@ body {
   align-self: center;
 }
 
-.search-form-wrapper,
+.search-form-wrapper {
+  display: flex;
+  flex-direction: column-reverse !important;
+}
+
 .search-form {
   display: contents;
 }
@@ -226,4 +230,10 @@ body {
 .tag-btn {
   background: none;
   border: none;
+}
+
+.error-message {
+  padding-left: 20rem;
+  color: red;
+  display: none;
 }
