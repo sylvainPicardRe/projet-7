@@ -11,22 +11,23 @@ class SearchForm {
   }
 
   async search(e) {
+    //gestion des carateres spéciaux
+    const userInput = e.target.value
+    const safeInput = escapeHTML(userInput)
+
     // gestion de l'affichage pour le message d'erreur pour le nombre de charactere saisi
-    if (e.target.value.length > 0 && e.target.value.length < 3) {
+    if (safeInput.length > 0 && safeInput.length < 3) {
       this.$errorMesage.style.display = 'block'
     } else {
       this.$errorMesage.style.display = 'none'
     }
 
-    if (e.target.value.length >= 3) {
+    if (safeInput.length >= 3) {
       this.resetBtn.style.display = 'block'
 
       this.$recipesWrapper.innerHTML = ''
 
-      const AdapterSearchLib = new SearchRecipesAdapter(
-        this.Recipes,
-        e.target.value,
-      )
+      const AdapterSearchLib = new SearchRecipesAdapter(this.Recipes, safeInput)
 
       const FilteredRecipes = await AdapterSearchLib.searchByInput()
 
