@@ -5,21 +5,30 @@ class SearchForm {
     this.Recipes = Recipes
 
     this.$recipesWrapper = document.querySelector('.recipes-wrapper')
+    this.$errorMesage = document.querySelector('.error-message')
+
     this.resetBtn = null
     this.items = null
     this.list = null
   }
 
   async search(e) {
-    if (e.target.value.length >= 3) {
+    //gestion des carateres spéciaux
+    const userInput = e.target.value
+    const safeInput = escapeHTML(userInput)
+
+    // gestion de l'affichage pour le message d'erreur pour le nombre de charactere saisi
+    if (safeInput.length > 0 && safeInput.length < 3) {
+      this.$errorMesage.style.display = 'block'
+    } else {
+      this.$errorMesage.style.display = 'none'
+    }
+    if (safeInput.length >= 3) {
       this.resetBtn.style.display = 'block'
 
       this.$recipesWrapper.innerHTML = ''
 
-      const AdapterSearchLib = new SearchRecipesAdapter(
-        this.Recipes,
-        e.target.value,
-      )
+      const AdapterSearchLib = new SearchRecipesAdapter(this.Recipes, safeInput)
 
       const FilteredRecipes = await AdapterSearchLib.searchByInput()
 
