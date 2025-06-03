@@ -237,3 +237,11 @@ body {
   color: red;
   display: none;
 }
+
+.empty-recipes {
+  width: 500px;
+}
+
+.empty-recipes span {
+  font-weight: 700;
+}

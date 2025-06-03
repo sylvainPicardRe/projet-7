@@ -38,7 +38,7 @@ class SearchForm {
           this.$recipesWrapper.appendChild(Template.createRecipeCard())
         })
       } else {
-        this.$recipesWrapper.innerHTML = `<p class="empty-recipes">Aucune recettes ne corresponds à la recherche</p>`
+        this.$recipesWrapper.innerHTML = `<p class="empty-recipes">Aucune recette ne contient <span>${safeInput}</span> <br/> Vous pouvez chercher « tarte aux pommes », « poisson », etc.</p>`
       }
       const Template = new RecipesCount(FilteredRecipes)
       Template.render()
